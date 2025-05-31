@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Canvas Circle Click Game</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%);
+            color: #222;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin: 0 0 10px;
+            user-select: none;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+        }
+
+        p {
+            font-size: 1.5rem;
+            margin: 0 0 15px;
+            color: #444;
+        }
+
+        #score {
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        canvas {
+            border-radius: 15px;
+            border: 4px solid #2c3e50;
+            background-color: #ffffffcc;
+            box-shadow:
+                    0 8px 16px rgba(44, 62, 80, 0.2),
+                    inset 0 0 10px #74ebd5;
+            cursor: pointer;
+            transition: transform 0.15s ease;
+            width: 600px;
+            height: 400px;
+        }
+
+        canvas:hover {
+            transform: scale(1.05);
+        }
+    </style>
+
+</head>
+<body>
+
+<h1>🎯 Click the Circle </h1>
+<p>Score: <span id="score">0</span></p>
+
+<canvas id="gameCanvas" width="600" height="400"></canvas>
+
+
+<script src="cricle.js"></script>
+</body>
+</html>
