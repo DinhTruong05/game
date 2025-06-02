@@ -1,77 +1,33 @@
-const canvas = document.getElementById('gameCanvas');
-const ctx = canvas.getContext('2d');
-const scoreDisplay = document.getElementById('score');
-
-let score = 0;
-let timeLeft = 30; // thời gian chơi 30 giây
-let circle = {
-    x: 100,
-    y: 100,
-    radius: 30
-};
-
-function getRandomPosition() {
-    circle.radius = Math.random() * (50 - 20) + 20;
-    circle.x = Math.random() * (canvas.width - 2 * circle.radius) + circle.radius;
-    circle.y = Math.random() * (canvas.height - 2 * circle.radius) + circle.radius;
-}
-
-function drawCircle() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.beginPath();
-    ctx.arc(circle.x, circle.y, circle.radius, 0, Math.PI * 2);
-    ctx.fillStyle = "red";
-    ctx.fill();
-    ctx.closePath();
-}
-
-function updateScore() {
-    score++;
-    scoreDisplay.textContent = score;
-}
-
-function clickHandler(event) {
-    if (timeLeft <= 0) return; // hết giờ thì không nhận click
-
-    const rect = canvas.getBoundingClientRect();
-    const clickX = event.clientX - rect.left;
-    const clickY = event.clientY - rect.top;
-
-    const dx = clickX - circle.x;
-    const dy = clickY - circle.y;
-    const distance = Math.sqrt(dx * dx + dy * dy);
-
-    if (distance <= circle.radius) {
-        updateScore();
-        getRandomPosition();
-        drawCircle();
+class Circle {
+    constructor(canvas, minRadius = 20, maxRadius = 50) {
+        this.canvas = canvas;
+        this.ctx = canvas.getContext('2d');
+        this.minRadius = minRadius;
+        this.maxRadius = maxRadius;
+        this.x = 0;
+        this.y = 0;
+        this.radius = 30;
+    }
+    // vẽ hình tròn có radius và vị trí ngẫu nhiên
+    getRandomPosition() {
+        this.radius = Math.random() * (this.maxRadius - this.minRadius) + this.minRadius;
+        this.x = Math.random() * (this.canvas.width - 2 * this.radius) + this.radius;
+        this.y = Math.random() * (this.canvas.height - 2 * this.radius) + this.radius;
+    }
+    // vẽ hình tròn trong canvas
+    draw() {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.ctx.beginPath();
+        this.ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        this.ctx.fillStyle = "red";
+        this.ctx.fill();
+        this.ctx.closePath();
+    }
+    // kiểm tra xem đã click vào trong bán kính hình tròn hay chưa
+    isClicked(clickX, clickY) {
+        const dx = clickX - this.x;
+        const dy = clickY - this.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        return distance <= this.radius;
     }
 }
-
-function startTimer() {
-    const timerDisplay = document.createElement('p');
-    timerDisplay.id = 'timer';
-    timerDisplay.style.fontSize = '1.5rem';
-    timerDisplay.style.margin = '10px 0';
-    document.body.insertBefore(timerDisplay, canvas);
-
-    const timerInterval = setInterval(() => {
-        if (timeLeft <= 0) {
-            clearInterval(timerInterval);
-            timerDisplay.textContent = `⏰ Time's up! Final score: ${score}`;
-            canvas.removeEventListener('click', clickHandler);
-            return;
-        }
-        timerDisplay.textContent = `Time left: ${timeLeft}s`;
-        timeLeft--;
-    }, 1000);
-}
-
-function init() {
-    getRandomPosition();
-    drawCircle();
-    canvas.addEventListener('click', clickHandler);
-    startTimer();
-}
-
-init();
