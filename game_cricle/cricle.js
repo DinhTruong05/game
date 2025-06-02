@@ -19,7 +19,8 @@ class Circle {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.ctx.beginPath();
         this.ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        this.ctx.fillStyle = "red";
+        const randomColor = `#${Math.floor(Math.random()*16777215).toString(16)}`
+        this.ctx.fillStyle =randomColor;
         this.ctx.fill();
         this.ctx.closePath();
     }
